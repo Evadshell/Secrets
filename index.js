@@ -10,10 +10,8 @@ import env from "dotenv";
 const { Pool } = pg;
 import { db } from "@vercel/postgres";
 import ejs from "ejs";
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Assuming your views are in a 'views' directory
-
-
+import path from "path"; 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL ,
 })
@@ -21,6 +19,7 @@ const app = express();
 const port = 3000;
 const saltRounds = 10;
 env.config();
+
 
 app.use(
   session({
@@ -31,6 +30,8 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views")); // Assuming your views are in a 'views' directory
 
 app.use(passport.initialize());
 app.use(passport.session());
