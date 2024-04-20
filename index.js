@@ -9,6 +9,7 @@ import session from "express-session";
 import env from "dotenv";
 const { Pool } = pg;
 import { db } from "@vercel/postgres";
+
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL ,
 })
@@ -37,7 +38,7 @@ app.use(passport.session());
 //   password: process.env.PG_PASSWORD,
 //   port: process.env.PG_PORT,
 // });
-const db= db.connect();
+const db1= db.connect();
 // db.connect();
 
 app.get("/", (req, res) => {
@@ -63,7 +64,7 @@ app.get("/logout", (req, res) => {
 
 app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
-const result= await db.query("SELECT * FROM userdata WHERE email=$1",[req.user.email]);
+const result= await db1.query("SELECT * FROM userdata WHERE email=$1",[req.user.email]);
     const secret = result.rows[0].secret;
     res.render("secrets.ejs",{secret:secret});
 
@@ -112,7 +113,7 @@ app.post("/register", async (req, res) => {
   const password = req.body.password;
 
   try {
-    const checkResult = await db.query("SELECT * FROM userdata WHERE email = $1", [
+    const checkResult = await db1.query("SELECT * FROM userdata WHERE email = $1", [
       email,
     ]);
 
@@ -123,7 +124,7 @@ app.post("/register", async (req, res) => {
         if (err) {
           console.error("Error hashing password:", err);
         } else {
-          const result = await db.query(
+          const result = await db1.query(
             "INSERT INTO userdata (email, password) VALUES ($1, $2) RETURNING *",
             [email, hash]
           );
@@ -146,7 +147,7 @@ app.post("/submit",async(req,res)=>{
   const secret = req.body.secret;
   console.log(secret,req.user);
   try{
-    const result = await db.query("UPDATE userdata SET secret = $1  WHERE email = $2",[secret,req.user.email]);
+    const result = await db1.query("UPDATE userdata SET secret = $1  WHERE email = $2",[secret,req.user.email]);
     res.redirect("/secrets");
   }catch(err){
     console.log(err);
@@ -156,7 +157,7 @@ passport.use(
   "local",
   new Strategy(async function verify(username, password, cb) {
     try {
-      const result = await db.query("SELECT * FROM userdata WHERE email = $1 ", [
+      const result = await db1.query("SELECT * FROM userdata WHERE email = $1 ", [
         username,
       ]);
       if (result.rows.length > 0) {
@@ -195,11 +196,11 @@ passport.use(
     async (accessToken, refreshToken, profile, cb) => {
       try {
         console.log(profile);
-        const result = await db.query("SELECT * FROM userdata WHERE email = $1", [
+        const result = await db1.query("SELECT * FROM userdata WHERE email = $1", [
           profile.email,
         ]);
         if (result.rows.length === 0) {
-          const newUser = await db.query(
+          const newUser = await db1.query(
             "INSERT INTO userdata (email, password) VALUES ($1, $2)",
             [profile.email, "google"]
           );
