@@ -9,6 +9,10 @@ import session from "express-session";
 import env from "dotenv";
 const { Pool } = pg;
 import { db } from "@vercel/postgres";
+import ejs from "ejs";
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views")); // Assuming your views are in a 'views' directory
+
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL ,
