@@ -8,7 +8,7 @@ import GoogleStrategy from "passport-google-oauth2";
 import session from "express-session";
 import env from "dotenv";
 const { Pool } = pg;
-
+import { db1 } from "@vercel/postgres";
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL ,
 })
@@ -30,14 +30,15 @@ app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session());
 
-const db = new pg.Client({
-  user: process.env.PG_USER,
-  host: process.env.PG_HOST,
-  database: process.env.PG_DATABASE,
-  password: process.env.PG_PASSWORD,
-  port: process.env.PG_PORT,
-});
-db.connect();
+// const db = new pg.Client({
+//   user: process.env.PG_USER,
+//   host: process.env.PG_HOST,
+//   database: process.env.PG_DATABASE,
+//   password: process.env.PG_PASSWORD,
+//   port: process.env.PG_PORT,
+// });
+const db= db1.connect();
+// db.connect();
 
 app.get("/", (req, res) => {
   res.render("home.ejs");
