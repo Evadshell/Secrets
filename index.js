@@ -43,7 +43,7 @@ app.use(passport.session());
 //   password: process.env.PG_PASSWORD,
 //   port: process.env.PG_PORT,
 // });
-const db1= db.connect();
+const db1= await db.connect();
 // db.connect();
 
 app.get("/", (req, res) => {
