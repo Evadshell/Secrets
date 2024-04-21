@@ -1,11 +1,10 @@
-
 body {
   background-color: #E8ECEF;
 }
 
 .centered {
-    padding-top: 200px;
-    text-align: center;
+  padding-top: 200px;
+  text-align: center;
 }
 
 .secret-text {
@@ -14,7 +13,8 @@ body {
   color: #fff;
   background-color: #000;
 }
-.button {
+
+.user-button {
   margin-top: 10px;
   display: flex;
   justify-content: center;
@@ -22,14 +22,14 @@ body {
   padding: 9px 12px;
   gap: 8px;
   height: 40px;
-  width: 250px;
+  width: 201px;
   border: none;
   background: #FF342B;
   border-radius: 20px;
   cursor: pointer;
 }
 
-.lable {
+.label {
   line-height: 22px;
   font-size: 17px;
   color: #fff;
@@ -37,11 +37,11 @@ body {
   letter-spacing: 1px;
 }
 
-.button:hover {
+.user-button:hover {
   background: #e52e26;
 }
 
-.button:hover .svg-icon {
+.user-button:hover .svg-icon {
   animation: slope 1s linear infinite;
 }
 
@@ -55,6 +55,21 @@ body {
 
   100% {
   }
+}
+
+.additional-button {
+  margin-top: 10px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+  height: 40px;
+  width: 201px;
+  border: none;
+  background: rgb(207, 182, 182);
+  border-radius: 20px;
+  cursor: pointer;
 }
 .users-align {
   display: flex;

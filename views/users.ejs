@@ -8,9 +8,12 @@
         <% for( let i = 0; i < users.length; i++ ) { %>
         
        
-    <button class="button">
-        <g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+    <button class="user-button"  data-index=<%= i %>>
+        
         <span class="lable"><%= users[i].email %></span>
+      </button>
+      <button class="additional-button" data-index=<%= i %> style="display: none;">
+        <span class="lable">Request Their Secret</span>
       </button> 
       <% } %>
     </div>
@@ -18,4 +21,29 @@
 
   </div>
 </div>
+
 <%- include('partials/footer') %>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const userButtons = document.querySelectorAll('.user-button');
+  userButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const index = button.getAttribute('data-index');
+      const additionalButton = document.querySelector(`.additional-button[data-index="${index}"]`);
+      if (additionalButton) {
+        if (additionalButton.style.display === 'block') {
+          additionalButton.style.display = 'none';
+        } else {
+          document.querySelectorAll('.additional-button').forEach(btn => {
+            btn.style.display = 'none';
+          });
+          additionalButton.style.display = 'block';
+        }
+      } else {
+        console.error('Additional button not found for index:', index);
+      }
+    });
+  });
+});
+    </script>
