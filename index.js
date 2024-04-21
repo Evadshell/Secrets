@@ -73,6 +73,7 @@ app.get("/logout", (req, res) => {
 });
 app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
+
 const result= await db1.query("SELECT * FROM userdata WHERE email=$1",[req.user.email]);
     const secret = result.rows[0].secret;
     res.render("secrets.ejs",{secret:secret});
@@ -90,7 +91,6 @@ app.get("/submit",(req,res)=>{
   }
 
 })
-
 app.get(
   "/auth/google",
   passport.authenticate("google", {
@@ -107,8 +107,11 @@ app.get(
 );
 app.get("/users", async (req,res)=>{
   if (req.isAuthenticated()) {
+    const current_email = req.user.email;
+    console.log(current_email);
     const result= await db1.query("SELECT email FROM userdata ");
-        const users = result.rows;
+        var users = result.rows;
+        users = users.filter(item => item.email !== current_email);
         console.log(users);
         res.render("users.ejs",{users:users});
     
