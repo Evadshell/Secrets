@@ -6,15 +6,24 @@
     <h1 class="display-3">All Users</h1>
     <div class="users-align">
         <% for( let i = 0; i < users.length; i++ ) { %>
-      <form action="/users" method="post">
-         <button  type="button" name="mailto" value="<%= users[i].email %>" class="user-button"  data-index=<%= i %>>
-        <span class="lable"><%= users[i].email %></span>
-         </button>
-      <button value="no" type="submit" name="access" class="additional-button" data-index=<%= i %> style="display: none;">
-        <span class="lable">Request Their Secret</span>
-      </button>
-      <input type="hidden" name="mailto_value" id="mailto_value">
-      <input type="hidden" name="access_value" id="access_value"> </form>
+            <form action="/users" method="post">
+                <button type="button" name="mailto" value="<%= users[i].email %>" class="user-button" data-index="<%= i %>">
+                  <span class="label"><%= users[i].email %></span>
+                </button>
+                <% let hasSecret = false; %>
+                <% for (let j = 0; j < data.length; j++) { %>
+                  <% if (data[j].access === 'yes' && data[j].requested_to_mail === users[i].email) { %>
+                    <p class="secret" data-index="<%= i %>" style="display: none;"><%= data[j].secrets %></>
+                    <% hasSecret = true; %>
+                  <% } %>
+                <% } %>
+                <% if (!hasSecret) { %>
+                  <button value="no" type="submit" name="access" class="additional-button" data-index="<%= i %>" style="display: none;">
+                    <span class="label">Request Their Secret</span>
+                  </button>
+                <% } %>
+      <input type="hidden" name="mailto_value" id="mailto_value_<%= i %>">
+      <input type="hidden" name="access_value" id="access_value_<%= i %>"> </form>
       <% } %>
     </div>
 
@@ -24,35 +33,42 @@
 
 <%- include('partials/footer') %>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const userButtons = document.querySelectorAll('.user-button');
-  const requestButtons = document.querySelectorAll('.additional-button');
-  
-  userButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const index = button.getAttribute('data-index');
-      const additionalButton = document.querySelector(`.additional-button[data-index="${index}"]`);
+<script>document.addEventListener('DOMContentLoaded', function() {
+    const userButtons = document.querySelectorAll('.user-button');
+    const requestButtons = document.querySelectorAll('.additional-button');
+    
+    userButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const index = button.getAttribute('data-index');
+        const additionalButton = document.querySelector(`.additional-button[data-index="${index}"]`);
+        const additionalButton1 = document.querySelector(`.secret[data-index="${index}"]`);
+        
+        if (additionalButton1 && additionalButton1.style.display === 'block') {
+        additionalButton1.style.display = 'none'; // Close secret if it's already open
+      } else if (additionalButton1) {
+        additionalButton1.style.display = 'block'; // Open secret
+
+    }
       if (additionalButton) {
-        if (additionalButton.style.display === 'block') {
-          additionalButton.style.display = 'none';
+          if (additionalButton.style.display === 'block') {
+            additionalButton.style.display = 'none';
+          } else {
+            document.querySelectorAll('.additional-button').forEach(btn => {
+              btn.style.display = 'none';
+            });
+            additionalButton.style.display = 'block';
+            const email = button.value;
+            const reqw = additionalButton.value;
+            document.getElementById('mailto_value_' + index).value = email;
+            document.getElementById('access_value_' + index).value = reqw;
+            console.log(email, reqw);
+          }
         } else {
-          document.querySelectorAll('.additional-button').forEach(btn => {
-            btn.style.display = 'none';
-          });
-
-          additionalButton.style.display = 'block';
-          const email = button.value;
-          const reqw = additionalButton.value;
-          document.getElementById('mailto_value').value = email;
-          document.getElementById('access_value').value = reqw;
-          console.log(email,reqw);
+          console.error('Additional button not found for index:', index);
         }
-      } else {
-        console.error('Additional button not found for index:', index);
-      }
+      });
     });
+  
   });
-
-});
+  
     </script>

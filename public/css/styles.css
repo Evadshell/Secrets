@@ -22,7 +22,7 @@ body {
   padding: 9px 12px;
   gap: 8px;
   height: 40px;
-  width: 201px;
+  width: 251px;
   border: none;
   background: #2a2297;
   border-radius: 20px;
@@ -65,7 +65,7 @@ body {
   padding: 9px 12px;
   gap: 8px;
   height: 40px;
-  width: 201px;
+  width: 251px;
   border: none;
   background: green;
   border-radius: 20px;
@@ -79,7 +79,7 @@ body {
   padding: 9px 12px;
   gap: 8px;
   height: 40px;
-  width: 201px;
+  width: 251px;
   border: none;
   background:red;
   border-radius: 20px;
@@ -91,4 +91,17 @@ body {
   align-items: center;
   justify-content: center;
   margin-top: 20px; /* Adjust margin as needed */
+}
+.secret{
+  margin-top: 10px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+  height: 40px;
+  width: 251px;
+  border: none;
+  background:red;
+  border-radius: 20px;
 }
