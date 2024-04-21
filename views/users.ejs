@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<div class="container">
+  <div class="jumbotron centered">
+    <i class="fas fa-key fa-6x"></i>
+    <h1 class="display-3">All Users</h1>
+    <div class="users-align">
+        <% for( let i = 0; i < users.length; i++ ) { %>
+        
+       
+    <button class="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" height="24" fill="none" class="svg-icon"><g stroke-width="2" stroke-linecap="round" stroke="#fff"><rect y="5" x="4" width="16" rx="2" height="16"></rect><path d="m8 3v4"></path><path d="m16 3v4"></path><path d="m4 11h16"></path></g></svg>
+        <span class="lable"><%= users[i] %></span>
+      </button> 
+      <% } %>
+    </div>
+
+
+  </div>
+</div>
+<%- include('partials/footer') %>

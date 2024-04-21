@@ -30,7 +30,6 @@ app.use(
 );
 
 
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
@@ -103,7 +102,17 @@ app.get(
     failureRedirect: "/login",
   })
 );
-
+app.get("/users", async (req,res)=>{
+  if (req.isAuthenticated()) {
+    const result= await db1.query("SELECT email FROM userdata ");
+        const users = result.rows;
+        console.log(users);
+        res.render("secrets.ejs",{users:users});
+    
+      } else {
+        res.redirect("/login");
+      }
+})
 app.post(
   "/login",
   passport.authenticate("local", {
@@ -228,3 +237,5 @@ passport.deserializeUser((user, cb) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
