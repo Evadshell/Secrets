@@ -34,7 +34,7 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views")); // Assuming your views are in a 'views' directory
+app.set("views", path.join(__dirname, "views")); 
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -69,14 +69,12 @@ app.get("/logout", (req, res) => {
     res.redirect("/");
   });
 });
-
 app.get("/secrets", async (req, res) => {
   if (req.isAuthenticated()) {
 const result= await db1.query("SELECT * FROM userdata WHERE email=$1",[req.user.email]);
     const secret = result.rows[0].secret;
     res.render("secrets.ejs",{secret:secret});
 
-    //TODO: Update this to pull in the user secret to render in secrets.ejs
   } else {
     res.redirect("/login");
   }
@@ -90,8 +88,6 @@ app.get("/submit",(req,res)=>{
   }
 
 })
-//TODO: Add a get route for the submit button
-//Think about how the logic should work with authentication.
 
 app.get(
   "/auth/google",
@@ -149,8 +145,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-//TODO: Create the post route for submit.
-//Handle the submitted data and add it to the database
+
 app.post("/submit",async(req,res)=>{
   const secret = req.body.secret;
   console.log(secret,req.user);
