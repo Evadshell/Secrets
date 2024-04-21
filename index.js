@@ -119,6 +119,34 @@ app.get("/users", async (req,res)=>{
         res.redirect("/login");
       }
 })
+// app.get("/requests",async (req,res)=>{
+//   if (req.isAuthenticated()) {
+//     const current_email = req.user.email;
+//     console.log(current_email);
+//     const result= await db1.query("SELECT email FROM userdata ");
+//         var users = result.rows;
+//         users = users.filter(item => item.email !== current_email);
+//         console.log(users);
+//         res.render("users.ejs",{users:users});
+    
+//       } else {
+//         res.redirect("/login");
+//       }
+
+// })
+app.post("/users",async (req,res)=>{
+  const requested_mail = req.user.email;
+  const access = req.body.access_value;
+  const requested_to_mail = req.body.mailto_value;
+  console.log(requested_mail,access,requested_to_mail)
+  try{
+    const result = await  db1.query("INSERT INTO requests (requested_mail,requested_to_mail,access) VALUES ($1,$2,$3)",[requested_mail,requested_to_mail,access]);
+   res.redirect("/users");
+  }
+  catch(err){
+    console.log(err);
+  }
+})
 app.post(
   "/login",
   passport.authenticate("local", {

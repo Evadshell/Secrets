@@ -6,15 +6,15 @@
     <h1 class="display-3">All Users</h1>
     <div class="users-align">
         <% for( let i = 0; i < users.length; i++ ) { %>
-        
-       
-    <button class="user-button"  data-index=<%= i %>>
-        
+      <form action="/users" method="post">
+         <button  type="button" name="mailto" value="<%= users[i].email %>" class="user-button"  data-index=<%= i %>>
         <span class="lable"><%= users[i].email %></span>
-      </button>
-      <button class="additional-button" data-index=<%= i %> style="display: none;">
+         </button>
+      <button value="no" type="submit" name="access" class="additional-button" data-index=<%= i %> style="display: none;">
         <span class="lable">Request Their Secret</span>
-      </button> 
+      </button>
+      <input type="hidden" name="mailto_value" id="mailto_value">
+      <input type="hidden" name="access_value" id="access_value"> </form>
       <% } %>
     </div>
 
@@ -27,6 +27,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const userButtons = document.querySelectorAll('.user-button');
+  const requestButtons = document.querySelectorAll('.additional-button');
+  
   userButtons.forEach(button => {
     button.addEventListener('click', () => {
       const index = button.getAttribute('data-index');
@@ -38,12 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
           document.querySelectorAll('.additional-button').forEach(btn => {
             btn.style.display = 'none';
           });
+
           additionalButton.style.display = 'block';
+          const email = button.value;
+          const reqw = additionalButton.value;
+          document.getElementById('mailto_value').value = email;
+          document.getElementById('access_value').value = reqw;
+          console.log(email,reqw);
         }
       } else {
         console.error('Additional button not found for index:', index);
       }
     });
   });
+
 });
     </script>
