@@ -26,6 +26,9 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
@@ -107,7 +110,7 @@ app.get("/users", async (req,res)=>{
     const result= await db1.query("SELECT email FROM userdata ");
         const users = result.rows;
         console.log(users);
-        res.render("secrets.ejs",{users:users});
+        res.render("users.ejs",{users:users});
     
       } else {
         res.redirect("/login");
