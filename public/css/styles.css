@@ -24,7 +24,7 @@ body {
   height: 40px;
   width: 201px;
   border: none;
-  background: #FF342B;
+  background: #2a2297;
   border-radius: 20px;
   cursor: pointer;
 }
@@ -38,7 +38,7 @@ body {
 }
 
 .user-button:hover {
-  background: #e52e26;
+  background: #2a22978a;
 }
 
 .user-button:hover .svg-icon {
@@ -67,7 +67,21 @@ body {
   height: 40px;
   width: 201px;
   border: none;
-  background: rgb(207, 182, 182);
+  background: green;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.additional-button-1 {
+  margin-top: 10px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+  height: 40px;
+  width: 201px;
+  border: none;
+  background:red;
   border-radius: 20px;
   cursor: pointer;
 }

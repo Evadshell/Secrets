@@ -119,21 +119,43 @@ app.get("/users", async (req,res)=>{
         res.redirect("/login");
       }
 })
-// app.get("/requests",async (req,res)=>{
-//   if (req.isAuthenticated()) {
-//     const current_email = req.user.email;
-//     console.log(current_email);
-//     const result= await db1.query("SELECT email FROM userdata ");
-//         var users = result.rows;
-//         users = users.filter(item => item.email !== current_email);
-//         console.log(users);
-//         res.render("users.ejs",{users:users});
-    
-//       } else {
-//         res.redirect("/login");
-//       }
+app.get("/requests",async (req,res)=>{
+  if (req.isAuthenticated()) {
+    const current_email = req.user.email;
+    console.log(current_email);
+    const result= await db1.query("SELECT * FROM requests WHERE requested_to_mail=$1 ",[current_email]);
+        var users = result.rows;
+        users = users.filter(item => item.email !== current_email);
+        // console.log(users);
+        res.render("request.ejs",{users:users});
 
-// })
+      } else {
+        res.redirect("/login");
+      }
+})
+app.post("/requests",async(req,res)=>{
+  const access= req.body.access;
+  const requested_to_mail = req.user.email;
+  const requested_mail = req.body.mailto_value;
+  console.log(access,requested_mail,requested_to_mail);
+  try{
+    if(access==='yes'){
+      const secret = await db1.query("SELECT secret FROM userdata WHERE email = $1",[requested_to_mail])
+      const secret1 = secret.rows[0].secret;
+      const result = await db1.query("UPDATE requests SET (secrets,access) = ($1,$2) WHERE (requested_mail,requested_to_mail) =($1,$2)",[secret1,access,requested_mail,requested_to_mail]);
+  res.redirect("/requests")
+    }
+    if(access==='no'){
+      const result = await db1.query("DELETE FROM  requests WHERE (requested_mail,requested_to_mail) =($1,$2)",[requested_mail,requested_to_mail]);
+      res.redirect("/requests")
+    }
+    
+  }
+  catch(err){
+    console.log(err);
+  }
+
+})
 app.post("/users",async (req,res)=>{
   const requested_mail = req.user.email;
   const access = req.body.access_value;
