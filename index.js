@@ -276,7 +276,6 @@ passport.use(
       callbackURL: "https://secrets-phi.vercel.app/auth/google/secrets"
       ,
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-      passReqToCallback : true,
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
