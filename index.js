@@ -112,9 +112,11 @@ app.get("/users", async (req,res)=>{
 
     try{
         const data = await db1.query("SELECT * FROM requests WHERE requested_mail = $1",[current_email]);
-      console.log(data.rows);
-      const date = data.rows;
-      console.log(date[1].access);
+      
+        const date = data.rows;
+
+      console.log(date.length);
+      
         const result= await db1.query("SELECT email FROM userdata ");
         var users = result.rows;
         users = users.filter(item => item.email !== current_email);
@@ -168,7 +170,7 @@ app.post("/requests",async(req,res)=>{
 })
 app.post("/users",async (req,res)=>{
   const requested_mail = req.user.email;
-  const access = req.body.access;
+  const access = req.body.access_value;
   const requested_to_mail = req.body.mailto_value;
   console.log(requested_mail,access,requested_to_mail)
   try{
