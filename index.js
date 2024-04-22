@@ -117,7 +117,7 @@ app.get("/users", async (req,res)=>{
 
       console.log(date.length);
       
-        const result= await db1.query("SELECT email FROM userdata ");
+         const result= await db1.query("SELECT email FROM userdata ");
         var users = result.rows;
         users = users.filter(item => item.email !== current_email);
         // console.log(users);
@@ -275,6 +275,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:3000/auth/google/secrets",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+      passReqToCallback : true,
     },
     async (accessToken, refreshToken, profile, cb) => {
       try {
