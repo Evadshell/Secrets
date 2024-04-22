@@ -155,11 +155,11 @@ app.post("/requests",async(req,res)=>{
     if(access==='yes'){
       const secret = await db1.query("SELECT secret FROM userdata WHERE email = $1",[requested_to_mail])
       const secret1 = secret.rows[0].secret;
-      const result = await db1.query("UPDATE requests SET (secrets,access) = ($1,$2) WHERE (requested_mail,requested_to_mail) =($3,$4)",[secret1,access,requested_mail,requested_to_mail]);
+      const result = await db1.query("UPDATE requests SET (secrets,access) = ($1,$2) WHERE (requested_mail,requested_to_mail) =($3,$4)",[secret1,access,requested_mail[0],requested_to_mail]);
   res.redirect("/requests")
     }
     else if(access==='no'){
-      const result = await db1.query("DELETE FROM  requests WHERE (requested_mail,requested_to_mail) =($1,$2)",[requested_mail,requested_to_mail]);
+      const result = await db1.query("DELETE FROM  requests WHERE (requested_mail,requested_to_mail) =($1,$2)",[requested_mail[0],requested_to_mail]);
       res.redirect("/requests")
     }
     
@@ -274,8 +274,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://secrets-phi.vercel.app/auth/google/secrets"
-      ,
+      callbackURL: "https://secrets-phi.vercel.app/auth/google/secrets",
+      // callbackURL: "http://localhost:3000/auth/google/secrets",
       userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
     },
     async (accessToken, refreshToken, profile, cb) => {
